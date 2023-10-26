@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import NavBar from "./navbar";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // Make sure to import the Router component
+
+import SipCalculator from "./Pages/SipCalculator";
+import NIfty50 from "./Pages/NIfty50";
+import WealthManager from "./Pages/WealthManager";
+import MutualFund from "./Pages/MutualFund";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="h-screen">
+      <NavBar />
+      <Router>
+        <Routes>
+          <Route path="/sip-calculator" element={<SipCalculator />} />
+          <Route path="/nifty" element={<NIfty50 />} />
+          <Route path="/wealth-manager" element={<WealthManager />} />
+          <Route path="/mutual-fund" element={<MutualFund />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
