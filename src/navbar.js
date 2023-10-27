@@ -3,7 +3,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const navigation = [
-  { name: "DashBoard", href: "/", current: true },
+  { name: "MoneyMentor", href: "/", current: true },
   { name: "SIP Calculator", href: "/sip-calculator", current: false },
   { name: "NIFTY50", href: "/nifty", current: false },
   { name: "Wealth Management", href: "/wealth-manager", current: false },

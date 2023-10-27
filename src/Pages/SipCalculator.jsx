@@ -89,15 +89,15 @@ function SipCalculator() {
         <div className="w-full flex flex-col gap-3 pt-10 ">
           <div className="flex flex-row justify-between">
             <p>Total Value</p>
-            <p>{totalValue}</p>
+            <p className="text-gray-600">₹{totalValue}</p>
           </div>
           <div className="flex flex-row justify-between">
             <p>Invested Amount</p>
-            <p>{investedAmount}</p>
+            <p className="text-gray-600">₹{investedAmount}</p>
           </div>
           <div className="flex flex-row justify-between">
             <p>Returns Gained</p>
-            <p>{totalValue - investedAmount}</p>
+            <p className="text-gray-600">₹{totalValue - investedAmount}</p>
           </div>
         </div>
       </div>

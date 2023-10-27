@@ -10,13 +10,57 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
-import { Card } from "@mui/material";
+import mutualData from "../data/mutual";
+import findMutualFund from "../functions/mutualFundFind";
+import {
+  List,
+  ListItem,
+  ListItemPrefix,
+  Avatar,
+  Typography,
+  ListItemSuffix,
+} from "@material-tailwind/react";
 
 function MutualFund() {
   const [value, setValue] = React.useState(10);
+  const [expectedReturn, setExpectedReturn] = React.useState(null);
+  const [moneyInvested, setMoneyInvested] = React.useState(null);
+  const [timePeriod, setTimePeriod] = React.useState(null);
+  const [riskValue, setRiskValue] = React.useState(null);
+  const [typeValue, setTypeValue] = React.useState(null);
 
+  const [result, setResult] = React.useState(null);
+  let temp = null;
   const handleChange = (event) => {
     setValue(event.target.value);
+  };
+
+  const findData = async () => {
+    switch (value) {
+      case 10:
+        temp = await findMutualFund(value, expectedReturn);
+        setResult(temp);
+        break;
+
+      case 20:
+        temp = await findMutualFund(value, timePeriod);
+        setResult(temp);
+        break;
+      case 30:
+        temp = await findMutualFund(value, riskValue);
+        console.log(riskValue);
+        setResult(temp);
+        break;
+      case 40:
+        temp = await findMutualFund(value, typeValue);
+        console.log(typeValue);
+        setResult(temp);
+        break;
+
+      default:
+        result = null;
+        break;
+    }
   };
   return (
     <div
@@ -42,20 +86,41 @@ function MutualFund() {
             </Select>
           </FormControl>
         </div>
-        <TextField label="Your Goal" variant="outlined" />
-        <TextField label="Price" variant="outlined" />
+        <TextField label="Goal" variant="outlined" />
+        <TextField
+          onChange={(event) => setMoneyInvested(event.target.value)}
+          variant="outlined"
+          value={moneyInvested}
+          label="Money Invested"
+        />
 
         {(() => {
           switch (value) {
             case 10:
-              return <TextField label="Expected Return(%)" variant="filled" />;
+              return (
+                <TextField
+                  label="Expected Return(%)"
+                  onChange={(event) => setExpectedReturn(event.target.value)}
+                  variant="filled"
+                  value={expectedReturn}
+                />
+              );
+              break;
             case 20:
               return (
-                <TextField label="Investment Period(Months)" variant="filled" />
+                <TextField
+                  value={timePeriod}
+                  onChange={(event) => setTimePeriod(event.target.value)}
+                  label="Investment Period(Months)"
+                  variant="filled"
+                />
               );
+              break;
             case 30:
               return (
-                <FormControl>
+                <FormControl
+                  onChange={(event) => setRiskValue(event.target.value)}
+                >
                   <FormLabel id="demo-row-radio-buttons-group-label">
                     Risk
                   </FormLabel>
@@ -70,12 +135,6 @@ function MutualFund() {
                       label="Low"
                     />
                     <FormControlLabel
-                      value="MEDIUM"
-                      control={<Radio />}
-                      label="Medium"
-                    />
-
-                    <FormControlLabel
                       value="HIGH"
                       control={<Radio />}
                       label="High"
@@ -83,9 +142,12 @@ function MutualFund() {
                   </RadioGroup>
                 </FormControl>
               );
+              break;
             case 40:
               return (
-                <FormControl>
+                <FormControl
+                  onChange={(event) => setTypeValue(event.target.value)}
+                >
                   <FormLabel id="demo-row-radio-buttons-group-label">
                     Type
                   </FormLabel>
@@ -113,17 +175,45 @@ function MutualFund() {
                   </RadioGroup>
                 </FormControl>
               );
+              break;
             default:
-              return <div>Render a default content</div>;
+              return <div></div>;
+              break;
           }
         })()}
-        <Button variant="outlined" startIcon={<SearchIcon />}>
+        <Button
+          variant="outlined"
+          onClick={() => findData()}
+          startIcon={<SearchIcon />}
+        >
           Search
         </Button>
       </div>
-
       {/* Mutual Funds cards */}
-      <div className="w-1/3 h-full overflow-hidden overflow-y-auto flex gap-5  py-6 flex-col "></div>
+      <div className="w-1/3 h-full overflow-hidden shadow-lg rounded-xl flex flex-col overflow-y-auto thisistest">
+        {result != null ? (
+          <List className="w-100 h-full flex flex-col rounded-md ">
+            {result.map((data) => (
+              <ListItem
+                className="w-100 flex border-0 flex-row px-2 py-3 justify-between"
+                key={data.name}
+                style={{
+                  height: "5000px",
+                }}
+              >
+                <ListItemPrefix>{data.name}</ListItemPrefix>
+                <ListItemSuffix className="text-green-500">
+                  {data.return_percentage_last_year}%
+                </ListItemSuffix>
+              </ListItem>
+            ))}
+          </List>
+        ) : (
+          <div className="w-full h-full flex justify-center items-center">
+            <p className="text-xl">No data to show</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
